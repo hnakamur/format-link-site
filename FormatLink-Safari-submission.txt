@@ -1,0 +1,66 @@
+# FormatLink-Safari submission form
+
+## Submission form URL
+https://developer.apple.com/submission/safari/form.php
+
+## Submitted Values
+Extension Display Name:
+Format Link
+
+Extension Bundle Identifier:
+com.appspot.format-link
+
+Download URL:
+http://format-link.appspot.com/binary/FormatLink.safariextz
+
+Update Manifest URL:
+http://format-link.appspot.com/xml/UpdateManifest.plist
+
+Extension file size (KB):
+12
+
+Short Description:
+Format the link and title in your favorite formats
+
+Long Description:
+Format the link of the active tab instantly to use in Markdown, Textile or other formats.
+
+1. Press the toolbar icon of "Format Link".
+2. When a popup opens, press Command-C to copy the formatted link to the clipboard.
+
+Also you can change the format for one time only with selecting the format in the dropdown list.
+
+You can modify formats in [Safari]/[Preferences] -> [Extensions].
+In format settings, you can write Javascript function bodies, to which arguments "url" and "title" are passed.
+
+Here are examples:
+
+* Markdown
+    * return '['+title.replace(/\[/g,'\\[').replace(/\]/g,'\\]')+']('+url.replace(/\)/g,'%29')+')'
+* Redmine Textile
+    * return '"'+title.replace(/"/g,'&quot;').replace(/\[/g,'&#91;')+'":'+url
+* HTML
+    * return '<a href="'+url.replace(/"/g,'&quot;')+'">'+title.replace(/</g,'&lt;')+'</a>'
+* Text
+    * return title+"\n"+url
+
+Extension Version:
+1.0
+
+Category:
+Productivity
+
+Extension Type:
+Toolbar button
+
+License Type:
+Freeware
+
+Is your extension designed to work with only one website?
+No
+
+Are you affiliated with, or do you operate or own that website?
+No
+
+Keywords:
+format, link, copy, clipboard
