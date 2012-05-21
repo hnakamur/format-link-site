@@ -4,6 +4,9 @@
 https://developer.apple.com/submission/safari/form.php
 
 ## Submitted Values
+Support URL:
+https://github.com/hnakamur/FormatLink-Safari/issues
+
 Extension Display Name:
 Format Link
 
@@ -17,7 +20,7 @@ Update Manifest URL:
 http://format-link.appspot.com/xml/UpdateManifest.plist
 
 Extension file size (KB):
-12
+16
 
 Short Description:
 Format the link and title in your favorite formats
@@ -31,18 +34,7 @@ Format the link of the active tab instantly to use in Markdown, Textile or other
 Also you can change the format for one time only with selecting the format in the dropdown list.
 
 You can modify formats in [Safari]/[Preferences] -> [Extensions].
-In format settings, you can write Javascript function bodies, to which arguments "url" and "title" are passed.
-
-Here are examples:
-
-* Markdown
-    * return '['+title.replace(/\[/g,'\\[').replace(/\]/g,'\\]')+']('+url.replace(/\)/g,'%29')+')'
-* Redmine Textile
-    * return '"'+title.replace(/"/g,'&quot;').replace(/\[/g,'&#91;')+'":'+url
-* HTML
-    * return '<a href="'+url.replace(/"/g,'&quot;')+'">'+title.replace(/</g,'&lt;')+'</a>'
-* Text
-    * return title+"\n"+url
+See https://github.com/hnakamur/FormatLink-Safari about settings.
 
 Extension Version:
 1.0

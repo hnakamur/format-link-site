@@ -1,3 +1,130 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    margin: 10px 13px 10px 13px;
+}
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+@media screen and (min-width: 768px) {
+    body {
+        width: 748px;
+        margin:10px auto;
+    }
+}
+</style>
+<title>Format Link for Safari</title>
+</head>
+<body>
 <h1>Format Link for Safari</h1>
 
 <h2>Why do I need it?</h2>
@@ -17,7 +144,30 @@
 <h2>Flexible settings</h2>
 
 <p>You can modify formats in [Safari]/[Preferences] -> [Extensions].
-In format settings, you can write Javascript function bodies, to which arguments <code>url</code> and <code>title</code> are passed.</p>
+In format settings, you can use the mini template language.</p>
+
+<ul>
+<li>{{variable}}
+
+<ul>
+<li>variable = title / url</li>
+<li>No spaces are allowed.</li>
+</ul>
+</li>
+<li>{{variable.s(&ldquo;foo&rdquo;,&ldquo;bar&rdquo;)}}
+
+<ul>
+<li>Which means variable.replace(new RegExp(&ldquo;foo&rdquo;, &lsquo;g&rsquo;), &ldquo;bar&rdquo;)</li>
+<li>You can use escape character \ in strings.</li>
+<li>You must escape the first argument for string and regexp.
+For example, .s(&ldquo;\[&rdquo;,&ldquo;\[&rdquo;) means replacing [ with \[</li>
+<li>You can chain multiple .s(&ldquo;foo&rdquo;,&ldquo;bar&rdquo;)</li>
+</ul>
+</li>
+<li>You can use the escape character \</li>
+<li>Other characters are treated as literal strings.</li>
+</ul>
+
 
 <p>Here are examples:</p>
 
@@ -25,25 +175,25 @@ In format settings, you can write Javascript function bodies, to which arguments
 <li>Markdown
 
 <ul>
-<li><code>return '['+title.replace(/\[/g,'\\[').replace(/\]/g,'\\]')+']('+url.replace(/\)/g,'%29')+')'</code></li>
+<li><code>[{{title.s("\\[","\\[").s("\\]","\\]")}}]({{url.s("\\)","%29")}})</code></li>
 </ul>
 </li>
 <li>Redmine Textile
 
 <ul>
-<li><code>return '"'+title.replace(/"/g,'&amp;quot;').replace(/\[/g,'&amp;#91;')+'":'+url</code></li>
+<li><code>"{{title.s("\"","&amp;quot;").s("\\[","&amp;#91;")}}":{{url}}</code></li>
 </ul>
 </li>
 <li>HTML
 
 <ul>
-<li><code>return '&lt;a href="'+url.replace(/"/g,'&amp;quot;')+'"&gt;'+title.replace(/&lt;/g,'&amp;lt;')+'&lt;/a&gt;'</code></li>
+<li><code>&lt;a href="{{url.s("\"","&amp;quot;")}}"&gt;{{title.s("&lt;","&amp;lt;")}}&lt;/a&gt;</code></li>
 </ul>
 </li>
 <li>Text
 
 <ul>
-<li><code>return title+"\n"+url</code></li>
+<li><code>{{title}}\n{{url}}</code></li>
 </ul>
 </li>
 </ul>
@@ -51,13 +201,17 @@ In format settings, you can write Javascript function bodies, to which arguments
 
 <h2>License</h2>
 
-<p>MIT License.</p>
+<p>MIT License.
+Source codes are hosted at <a href="https://github.com/hnakamur/FormatLink-Safari">Github</a></p>
 
 <h2>Icon credits</h2>
 
 <p>I synthesized two icons (a pencil and a link) to produce <code>Icon.png</code>.</p>
 
 <ul>
-<li>A pencil icon from <a href="http://www.icojoy.com/articles/44/">Onebit free icon set</a> ?? 2010 <a href="http://www.icojoy.com/">Khodjaev Stanislav</a>, used under a License: These icons are free to use in any kind of commercial or non-commercial project unlimited times.</li>
-<li>A link icon from <a href="http://pc.de/icons/#Bremen">Bremen icon set</a> ?? 2010 <a href="http://pc.de/icons/">Patricia Clausnitzer</a>, used under a <a href="hhttp://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a></li>
+<li>A pencil icon from <a href="http://www.icojoy.com/articles/44/">Onebit free icon set</a> © 2010 <a href="http://www.icojoy.com/">Khodjaev Stanislav</a>, used under a License: These icons are free to use in any kind of commercial or non-commercial project unlimited times.</li>
+<li>A link icon from <a href="http://pc.de/icons/#Bremen">Bremen icon set</a> © 2010 <a href="http://pc.de/icons/">Patricia Clausnitzer</a>, used under a <a href="hhttp://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a></li>
 </ul>
+
+</body>
+</html>
